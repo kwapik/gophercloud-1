@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/gophercloud/gophercloud"
+	"github.com/gophercloud/gophercloud/openstack/identity/v3/projects"
+	"github.com/gophercloud/gophercloud/openstack/identity/v3/roles"
 )
 
 // Endpoint represents a single API endpoint offered by a service.
@@ -96,6 +98,10 @@ type Token struct {
 	ID string `json:"id"`
 	// ExpiresAt is the timestamp at which this token will no longer be accepted.
 	ExpiresAt time.Time `json:"expires_at"`
+	// Project provides information about the project to which this token grants access.
+	Project projects.Project `json:"project"`
+	// Authorization need user info which can get from token authentication's response.
+	Roles []roles.Role `json:"roles"`
 }
 
 func (r commonResult) ExtractInto(v interface{}) error {
