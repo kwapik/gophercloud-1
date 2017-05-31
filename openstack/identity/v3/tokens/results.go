@@ -68,6 +68,20 @@ func (r commonResult) ExtractToken() (*Token, error) {
 	return &s, err
 }
 
+// ExtractUser returns the User that is the owner of the Token.
+func (r commonResult) ExtractUser() (*roles.User, error) {
+	var s roles.User
+	err := r.ExtractInto(&s)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the token itself from the stored headers.
+	s.ID = r.Header.Get("X-Subject-Token")
+
+	return &s, err
+}
+
 // ExtractServiceCatalog returns the ServiceCatalog that was generated along with the user's Token.
 func (r CreateResult) ExtractServiceCatalog() (*ServiceCatalog, error) {
 	var s ServiceCatalog
